@@ -1,5 +1,8 @@
 header {
+  position: fixed;
+  width: 100%;
   background-color: var(--color-main-1);
+  box-shadow: 0 0 0.5rem 0.5rem var(--color-shadow);
 }
 
 .header-bar {
@@ -20,11 +23,11 @@ header {
 
 .title {
   font-size: var(--font-size-big);
-  color: var(--color-white-1);
+  color: var(--color-white);
 }
 
 .logo {
-  color: var(--color-white-1);
+  color: var(--color-white);
   width: var(--font-size-big);
   height: var(--font-size-big);
 }
@@ -41,7 +44,7 @@ header {
 }
 
 .menu button {
-  color: var(--color-white-1);
+  color: var(--color-white);
   font-size: var(--font-size-regular);
   background-color: var(--color-main-tint-1);
   border: 1px solid transparent;
@@ -55,6 +58,10 @@ header {
   background-color: var(--color-main-tint-2);
 }
 
+.menu button:active {
+  background-color: var(--color-main-tint-3);
+}
+
 .menu-button-content {
   flex: 1 0 auto;
   display: flex;
@@ -65,7 +72,7 @@ header {
 }
 
 .menu-icon {
-  color: var(--color-white-1);
+  color: var(--color-white);
   /* width: var(--font-size-medium);
   height: var(--font-size-medium); */
   width: 1.5rem;
@@ -75,4 +82,5 @@ header {
 .menu span {
   text-transform: uppercase;
   letter-spacing: normal;
+  text-shadow: 0 0 0.2rem var(--color-main-1);
 }

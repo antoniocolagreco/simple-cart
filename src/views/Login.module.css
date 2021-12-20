@@ -1,0 +1,44 @@
+.login-button {
+  background-color: var(--color-main-tint-1);
+  color: var(--color-white);
+}
+
+.login-button:hover {
+  background-color: var(--color-main-tint-2);
+}
+
+.login-button:active {
+  background-color: var(--color-main-tint-3);
+}
+
+.signin-container {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  font-size: var(--font-size-medium);
+}
+
+.signin-button {
+  background-color: var(--color-accent-tint-1);
+  color: var(--color-white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.signin-button:hover {
+  background-color: var(--color-accent-tint-2);
+}
+
+.signin-button:active {
+  background-color: var(--color-accent-tint-3);
+}
+
+.signin-icon {
+  display: inline-block;
+  width: var(--font-size-big);
+  height: var(--font-size-big);
+}
