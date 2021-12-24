@@ -29,7 +29,9 @@
   --color-accent-tint-5: #e3fafc;
   --color-accent-tint-6: hsla(185, 81%, 94%, 0.5);
   --color-error: #f03e3e;
-  --color-error-tint-1: #fff5f5;
+  --color-error-tint-1: #fa5252;
+  --color-error-tint-2: #ff6b6b;
+  --color-error-tint-3: #fff5f5;
 }
 
 * {
@@ -93,18 +95,6 @@ main {
   padding: 2.7rem var(--page-side-padding);
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  width: 20rem;
-  margin: 2rem auto;
-  background-color: var(--color-white);
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 0.5rem 0.5rem 0.1rem var(--color-shadow);
-}
-
 input {
   font-size: var(--font-size-medium);
   padding: 0.5rem;
@@ -125,10 +115,11 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
 input.invalid {
-  background-color: var(--color-error-tint-1);
+  background-color: var(--color-error-tint-3);
   border: 1px solid var(--color-error);
   color: var(--color-error);
 }

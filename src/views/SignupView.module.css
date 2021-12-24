@@ -1,0 +1,56 @@
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.signup-button {
+  background-color: var(--color-main-tint-1);
+  color: var(--color-white);
+}
+
+.signup-button:hover {
+  background-color: var(--color-main-tint-2);
+}
+
+.signup-button:active {
+  background-color: var(--color-main-tint-3);
+}
+
+.error-message {
+  margin-top: 0.5rem;
+  font-size: var(--font-size-regular);
+  color: var(--color-error);
+}
+
+.cancel-container {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  font-size: var(--font-size-medium);
+}
+
+.cancel-button {
+  background-color: var(--color-error);
+  color: var(--color-white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cancel-button:hover {
+  background-color: var(--color-error-tint-1);
+}
+
+.cancel-button:active {
+  background-color: var(--color-error-tint-2);
+}
+
+.icon {
+  display: inline-block;
+  width: var(--font-size-big);
+  height: var(--font-size-big);
+}

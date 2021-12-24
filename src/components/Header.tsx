@@ -1,5 +1,5 @@
-import { useContext } from 'react';
-import UserContext from '../context/UserContext';
+import { useContext, MouseEvent } from 'react';
+import AuthContext from '../contexts/AuthContext';
 import AddItemIcon from '../icons/AddItemIcon';
 import SettingsIcon from '../icons/SettingsIcon';
 import ShoppingCartIcon from '../icons/ShoppingCartIcon';
@@ -7,7 +7,13 @@ import ShoppingListsIcon from '../icons/ShoppingListsIcon';
 import css from './Header.module.css';
 
 const Header = (props: HeaderProps) => {
-  const userContext = useContext(UserContext);
+  const authContext = useContext(AuthContext);
+
+  const logout = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    authContext.logout();
+    props.onLogout();
+  };
 
   return (
     <>
@@ -17,36 +23,41 @@ const Header = (props: HeaderProps) => {
             <ShoppingCartIcon className={css.logo} />
             <h1 className={css.title}>Simple Cart</h1>
           </div>
-          <div>User</div>
+          {authContext.isLoggedIn() && (
+            <nav className={css.menu}>
+              <button>
+                <div className={css['menu-button-content']}>
+                  <ShoppingCartIcon className={css['menu-icon']} />
+                  <span>Carrello</span>
+                </div>
+              </button>
+              <button>
+                <div className={css['menu-button-content']}>
+                  <AddItemIcon className={css['menu-icon']} />
+                  <span>Aggiungi</span>
+                </div>
+              </button>
+              <button>
+                <div className={css['menu-button-content']}>
+                  <ShoppingListsIcon className={css['menu-icon']} />
+                  <span>Liste</span>
+                </div>
+              </button>
+              <button>
+                <div className={css['menu-button-content']}>
+                  <SettingsIcon className={css['menu-icon']} />
+                  <span>Impostazioni</span>
+                </div>
+              </button>
+
+              <button onClick={logout}>
+                <div className={css['menu-button-content']}>
+                  <span> {authContext.user?.displayName}</span>
+                </div>
+              </button>
+            </nav>
+          )}
         </div>
-        {userContext.user.isLoggedIn && (
-          <nav className={css.menu}>
-            <button>
-              <div className={css['menu-button-content']}>
-                <ShoppingCartIcon className={css['menu-icon']} />
-                <span>Carrello</span>
-              </div>
-            </button>
-            <button>
-              <div className={css['menu-button-content']}>
-                <AddItemIcon className={css['menu-icon']} />
-                <span>Aggiungi</span>
-              </div>
-            </button>
-            <button>
-              <div className={css['menu-button-content']}>
-                <ShoppingListsIcon className={css['menu-icon']} />
-                <span>Liste</span>
-              </div>
-            </button>
-            <button>
-              <div className={css['menu-button-content']}>
-                <SettingsIcon className={css['menu-icon']} />
-                <span>Impostazioni</span>
-              </div>
-            </button>
-          </nav>
-        )}
       </header>
     </>
   );
@@ -54,4 +65,6 @@ const Header = (props: HeaderProps) => {
 
 export default Header;
 
-interface HeaderProps {}
+interface HeaderProps {
+  onLogout(): void;
+}

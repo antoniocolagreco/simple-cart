@@ -13,16 +13,19 @@ header {
   justify-content: space-between;
   margin: 0 auto;
   align-items: center;
+  min-height: 4rem;
 }
 
 .title-container {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  flex-shrink: 0;
+  margin-right: 0.5rem;
 }
 
 .title {
-  font-size: var(--font-size-big);
+  font-size: var(--font-size-very-big);
   color: var(--color-white);
 }
 
@@ -33,12 +36,7 @@ header {
 }
 
 .menu {
-  background-color: var(--color-main-1);
   display: flex;
-  min-width: var(--page-min-width);
-  max-width: var(--page-max-width);
-  padding: 0.5rem var(--page-side-padding);
-  margin: 0 auto;
   gap: 1vw;
   justify-content: center;
 }
