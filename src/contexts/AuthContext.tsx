@@ -10,7 +10,8 @@ import {
   signOut,
   onAuthStateChanged,
 } from 'firebase/auth';
-import firebaseApp from '../api/firebaseApp';
+import { FirebaseError } from '@firebase/util';
+import { FirebaseInit } from '../api/FirebaseInit';
 
 export enum LoginOutcome {
   OK,
@@ -26,7 +27,7 @@ export enum SignupOutcome {
 }
 
 const context: AuthContextInterface = {
-  isInitialising: true,
+  isLoadingUser: true,
   user: null,
   isLoggedIn: () => false,
   login: (email: string, password: string): Promise<LoginOutcome> => {
@@ -48,18 +49,15 @@ export default AuthContext;
 
 export const AuthContextProvider = (props: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isAuthLoading, setAuthLoading] = useState<boolean>(true);
-  const auth = getAuth(firebaseApp);
-  console.log('INITIALIZING ' + isAuthLoading);
+  const [isLoadingUser, setIsLoadingUser] = useState<boolean>(true);
+  const auth = getAuth(FirebaseInit.getFirebaseApp());
+  console.log('Is loading user: ' + isLoadingUser);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
       setUser(authUser);
-      setAuthLoading(false);
-      // console.log('USER: ' + authUser);
-      console.log(auth);
+      setIsLoadingUser(false);
     });
-    // console.log('USER STATE UPDATED');
     return unsubscribe;
   }, [auth]);
 
@@ -71,7 +69,7 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
         .then((userCredential) => {
           setUser(userCredential.user);
         })
-        .catch((error) => {
+        .catch((error: FirebaseError) => {
           const errorCode = error.code;
           console.log(errorCode);
           switch (errorCode) {
@@ -94,11 +92,11 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
   const logoutHandler = async () => {
     await signOut(auth)
       .then(() => {
-        console.log('LOGOUT');
-        setAuthLoading(false);
+        setIsLoadingUser(false);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((error: FirebaseError) => {
+        const errorCode = error.code;
+        console.log(errorCode);
       });
   };
 
@@ -113,7 +111,7 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
           });
           setUser(userCredential.user);
         })
-        .catch((error) => {
+        .catch((error: FirebaseError) => {
           const errorCode = error.code;
           console.log(errorCode);
           switch (errorCode) {
@@ -137,7 +135,7 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
   return (
     <AuthContext.Provider
       value={{
-        isInitialising: isAuthLoading,
+        isLoadingUser: isLoadingUser,
         user: user,
         isLoggedIn: isLoggedIn,
         login: loginHandler,
@@ -151,7 +149,7 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
 };
 
 interface AuthContextInterface {
-  isInitialising: boolean;
+  isLoadingUser: boolean;
   user: User | null;
   isLoggedIn(): boolean;
   login(email: string, password: string): Promise<LoginOutcome>;

@@ -1,5 +1,6 @@
 import { useState, ChangeEvent, FocusEvent, FormEvent, useContext } from 'react';
-import SmallViewContainer from '../components/SmallViewContainer';
+import Card from '../components/UI/Card';
+import ViewContainer from '../components/UI/ViewContainer';
 import AuthContext, { SignupOutcome } from '../contexts/AuthContext';
 import ChevronLeft from '../icons/ChevronLeft';
 import css from './SignupView.module.css';
@@ -10,11 +11,10 @@ const passwordRegex = /^.*(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/;
 const nameRegex = /^([\p{L}']+ )+[\p{L}']+$|^[\p{L}']+$/gmu;
 
 const formatName = (name: string): string => {
-  console.log('FORMAT');
   return name
     .toLowerCase()
     .replace(/[\w]*/gu, (w) => w.replace(/^\w/, (c) => c.toUpperCase()))
-    .replace(/ {2}/gu, ' ')
+    .replace(/  +/gu, ' ')
     .replace(/^ *| *$/, '');
 };
 
@@ -74,7 +74,6 @@ const SignupView = (props: SignupViewProps) => {
     if (emailIsValid && passwordIsValid && nameIsValid) {
       setIsLoading(true);
       const outcome = await authContext.signup(email, password, name);
-      console.log('OUTCOME = ' + outcome);
       switch (outcome) {
         case SignupOutcome.OK:
           props.onSuccess();
@@ -92,61 +91,63 @@ const SignupView = (props: SignupViewProps) => {
   };
 
   return (
-    <SmallViewContainer iSLoading={isLoading}>
-      <form className={css['signup-form']} onSubmit={signupHandler} noValidate>
-        <div>
-          <input
-            type='email'
-            placeholder='Inserisci il tuo indirizzo email'
-            value={email}
-            onChange={emailChangeHandler}
-            onBlur={emailBlurHandler}
-            className={(!emailIsValid || !emailServerValid) && emailEdited ? 'invalid' : ''}
-          />
-          {!emailIsValid && emailEdited && (
-            <p className={css['error-message']}>PORCO DIO!!! L'indirizzo email non è valido.</p>
-          )}
-          {!emailServerValid && emailEdited && <p className={css['error-message']}>Indirizzo email già in uso.</p>}
-        </div>
-        <div>
-          <input
-            type='password'
-            formNoValidate
-            placeholder='Inserisci una password'
-            value={password}
-            onChange={passwordChangeHandler}
-            onBlur={passwordBlurHandler}
-            className={!passwordIsValid && passwordEdited ? 'invalid' : ''}
-          />
-          {!passwordIsValid && passwordEdited && (
-            <p className={css['error-message']}>
-              La password non è valida. E' necessario inserire almeno 8 caratteri, 1 lettera minuscola, 1 maiuscola ed 1
-              numero.
-            </p>
-          )}
-        </div>
-        <div>
-          <input
-            type='text'
-            placeholder='Inserisci il tuo nome'
-            value={name}
-            onChange={nameChangeHandler}
-            onBlur={nameBlurHandler}
-            className={!nameIsValid && nameEdited ? 'invalid' : ''}
-          />
-          {!nameIsValid && nameEdited && <p className={css['error-message']}>Nome non valido</p>}
-        </div>
-        <button type='submit' className={css['signup-button']}>
-          Registrati
-        </button>
-        <div className={css['cancel-container']}>
-          <button className={css['cancel-button']} onClick={props.onCancel}>
-            <ChevronLeft className={css.icon} />
-            Annulla
+    <ViewContainer centered={true}>
+      <Card iSLoading={isLoading}>
+        <form className={css['signup-form']} onSubmit={signupHandler} noValidate>
+          <div>
+            <input
+              type='email'
+              placeholder='Inserisci il tuo indirizzo email'
+              value={email}
+              onChange={emailChangeHandler}
+              onBlur={emailBlurHandler}
+              className={(!emailIsValid || !emailServerValid) && emailEdited ? 'invalid' : ''}
+            />
+            {!emailIsValid && emailEdited && (
+              <p className={css['error-message']}>PORCO DIO!!! L'indirizzo email non è valido.</p>
+            )}
+            {!emailServerValid && emailEdited && <p className={css['error-message']}>Indirizzo email già in uso.</p>}
+          </div>
+          <div>
+            <input
+              type='password'
+              formNoValidate
+              placeholder='Inserisci una password'
+              value={password}
+              onChange={passwordChangeHandler}
+              onBlur={passwordBlurHandler}
+              className={!passwordIsValid && passwordEdited ? 'invalid' : ''}
+            />
+            {!passwordIsValid && passwordEdited && (
+              <p className={css['error-message']}>
+                La password non è valida. E' necessario inserire almeno 8 caratteri, 1 lettera minuscola, 1 maiuscola ed
+                1 numero.
+              </p>
+            )}
+          </div>
+          <div>
+            <input
+              type='text'
+              placeholder='Inserisci il tuo nome'
+              value={name}
+              onChange={nameChangeHandler}
+              onBlur={nameBlurHandler}
+              className={!nameIsValid && nameEdited ? 'invalid' : ''}
+            />
+            {!nameIsValid && nameEdited && <p className={css['error-message']}>Nome non valido</p>}
+          </div>
+          <button type='submit' className={css['signup-button']}>
+            Registrati
           </button>
-        </div>
-      </form>
-    </SmallViewContainer>
+          <div className={css['cancel-container']}>
+            <button className={css['cancel-button']} onClick={props.onCancel}>
+              <ChevronLeft className={css.icon} />
+              Annulla
+            </button>
+          </div>
+        </form>
+      </Card>
+    </ViewContainer>
   );
 };
 

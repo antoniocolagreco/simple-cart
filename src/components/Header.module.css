@@ -1,22 +1,28 @@
 header {
-  position: fixed;
+  /* position: fixed; */
   width: 100%;
   background-color: var(--color-main-1);
   box-shadow: 0 0 0.5rem 0.5rem var(--color-shadow);
+  z-index: 1;
 }
 
 .header-bar {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  column-gap: 0.5rem;
   min-width: var(--page-min-width);
   max-width: var(--page-max-width);
   padding: 0.5rem var(--page-side-padding);
-  justify-content: space-between;
   margin: 0 auto;
   align-items: center;
   min-height: 4rem;
+  transition: 0.2s all;
 }
 
 .title-container {
+  grid-column: 1/2;
+  grid-row: 1/2;
+  justify-self: left;
   display: flex;
   gap: 0.5rem;
   align-items: center;
@@ -35,16 +41,23 @@ header {
   height: var(--font-size-big);
 }
 
-.menu {
-  display: flex;
-  gap: 1vw;
-  justify-content: center;
+.user-container {
+  grid-column: 3/4;
+  grid-row: 1/2;
+  justify-self: right;
 }
 
-.menu button {
-  color: var(--color-white);
+.user-icon {
+  color: var(--color-black);
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.user-button {
+  color: var(--color-black);
   font-size: var(--font-size-regular);
-  background-color: var(--color-main-tint-1);
+  background-color: var(--color-white);
+  text-decoration: none;
   border: 1px solid transparent;
   padding: 0.5rem;
   border-radius: 5px;
@@ -52,12 +65,40 @@ header {
   cursor: pointer;
 }
 
-.menu button:hover {
+.user-button:hover {
+  background-color: #ffd8a8;
+}
+.user-button:active {
+  background-color: var(--color-white);
+}
+
+.menu {
+  grid-column: span 1;
+  justify-self: right;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.menu-button {
+  color: var(--color-white);
+  font-size: var(--font-size-regular);
+  background-color: var(--color-main-tint-1);
+  text-decoration: none;
+  border: 1px solid transparent;
+  padding: 0.5rem;
+  border-radius: 5px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.menu-button:hover {
   background-color: var(--color-main-tint-2);
 }
 
-.menu button:active {
+.menu-button:active {
   background-color: var(--color-main-tint-3);
+  scale: 1.05;
 }
 
 .menu-button-content {
@@ -71,8 +112,6 @@ header {
 
 .menu-icon {
   color: var(--color-white);
-  /* width: var(--font-size-medium);
-  height: var(--font-size-medium); */
   width: 1.5rem;
   height: 1.5rem;
 }

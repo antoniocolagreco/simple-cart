@@ -1,0 +1,14 @@
+.view-main {
+  height: inherit;
+  width: inherit;
+  padding: 1rem var(--page-side-padding) 0;
+  display: flex;
+  flex-direction: column;
+  min-width: var(--page-min-width);
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+}
+
+.centered {
+  justify-content: center;
+}

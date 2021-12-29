@@ -1,9 +1,9 @@
 import { useContext, MouseEvent } from 'react';
+import { NavLink } from 'react-router-dom';
 import AuthContext from '../contexts/AuthContext';
 import AddItemIcon from '../icons/AddItemIcon';
-import SettingsIcon from '../icons/SettingsIcon';
+import ListIcon from '../icons/ListIcon';
 import ShoppingCartIcon from '../icons/ShoppingCartIcon';
-import ShoppingListsIcon from '../icons/ShoppingListsIcon';
 import css from './Header.module.css';
 
 const Header = (props: HeaderProps) => {
@@ -25,37 +25,29 @@ const Header = (props: HeaderProps) => {
           </div>
           {authContext.isLoggedIn() && (
             <nav className={css.menu}>
-              <button>
+              <NavLink to='cart' className={css['menu-button']}>
                 <div className={css['menu-button-content']}>
                   <ShoppingCartIcon className={css['menu-icon']} />
                   <span>Carrello</span>
                 </div>
-              </button>
-              <button>
+              </NavLink>
+              <NavLink to='add' className={css['menu-button']}>
                 <div className={css['menu-button-content']}>
                   <AddItemIcon className={css['menu-icon']} />
                   <span>Aggiungi</span>
                 </div>
-              </button>
-              <button>
-                <div className={css['menu-button-content']}>
-                  <ShoppingListsIcon className={css['menu-icon']} />
-                  <span>Liste</span>
-                </div>
-              </button>
-              <button>
-                <div className={css['menu-button-content']}>
-                  <SettingsIcon className={css['menu-icon']} />
-                  <span>Impostazioni</span>
-                </div>
-              </button>
-
-              <button onClick={logout}>
+              </NavLink>
+            </nav>
+          )}
+          {authContext.isLoggedIn() && (
+            <div className={css['user-container']}>
+              <button onClick={logout} className={css['user-button']}>
                 <div className={css['menu-button-content']}>
                   <span> {authContext.user?.displayName}</span>
+                  <ListIcon className={css['user-icon']} />
                 </div>
               </button>
-            </nav>
+            </div>
           )}
         </div>
       </header>

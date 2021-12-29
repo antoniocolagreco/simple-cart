@@ -3,42 +3,56 @@ import Header from './components/Header';
 import LoginView from './views/LoginView';
 import SignupView from './views/SignupView';
 import AuthContext from './contexts/AuthContext';
-import WelcomeView from './views/WelcomeView';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import CartView from './views/CartView';
+import AddItemView from './views/AddItemView';
+import LoadingMask from './components/UI/LoadingMask';
+import ItemType from './models/ItemType';
+import { AnimatePresence } from 'framer-motion';
 
 export enum Views {
-  LOGIN,
-  SIGNUP,
-  WELCOME,
+  LOGIN = 'login',
+  SIGNUP = 'signup',
+  CART = 'cart',
+  ADD = 'add',
 }
 
 function App() {
   const authContext = useContext(AuthContext);
-  const [currentView, setCurrentView] = useState<Views>(Views.LOGIN);
-
-  const goToLogin = () => {
-    setCurrentView(Views.LOGIN);
-  };
-  const goToSignup = () => {
-    setCurrentView(Views.SIGNUP);
-  };
-  const goToWelcome = () => {
-    setCurrentView(Views.WELCOME);
-  };
+  const location = useLocation();
+  const nav = useNavigate();
+  const allItems = useState<ItemType[]>(ItemType.getDummyData());
 
   return (
     <>
-      <Header onLogout={goToLogin} />
-      <main>
-        <div className='page-container'>
-          {!authContext.isInitialising && !authContext.isLoggedIn() && currentView === Views.LOGIN && (
-            <LoginView onSignup={goToSignup} onSuccess={goToWelcome} />
-          )}
-          {!authContext.isInitialising && !authContext.isLoggedIn() && currentView === Views.SIGNUP && (
-            <SignupView onCancel={goToLogin} onSuccess={goToWelcome} />
-          )}
-          {!authContext.isInitialising && authContext.isLoggedIn() && currentView === Views.WELCOME && <WelcomeView />}
-        </div>
-      </main>
+      <Header onLogout={() => nav(Views.LOGIN)} />
+      <AnimatePresence exitBeforeEnter>
+        {!authContext.isLoadingUser && (
+          <Routes location={location} key={location.pathname}>
+            {authContext.isLoggedIn() && (
+              <>
+                <Route path={Views.CART} element={<CartView />} />
+                <Route path={Views.ADD} element={<AddItemView />} />
+                <Route path='*' element={<Navigate to={Views.CART} />} />
+              </>
+            )}
+            {!authContext.isLoggedIn() && (
+              <>
+                <Route
+                  path='/login'
+                  element={<LoginView onSignup={() => nav(Views.SIGNUP)} onSuccess={() => nav(Views.CART)} />}
+                />
+                <Route
+                  path='/signup'
+                  element={<SignupView onCancel={() => nav(Views.LOGIN)} onSuccess={() => nav(Views.CART)} />}
+                />
+                <Route path='*' element={<Navigate to='/login' />} />
+              </>
+            )}
+          </Routes>
+        )}
+      </AnimatePresence>
+      <LoadingMask isVisible={authContext.isLoadingUser} label='Authenticating...' />
     </>
   );
 }

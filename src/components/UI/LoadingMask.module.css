@@ -1,0 +1,17 @@
+.loading-mask {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: hsla(0, 0%, 100%, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.loading-mask span {
+  /* color: var(--color-main-1); */
+  /* font-weight: var(--font-weight-bold); */
+  margin-top: 1rem;
+  font-size: var(--font-size-regular);
+}
