@@ -1,6 +1,6 @@
 import React from 'react';
-import Card from '../components/UI/Card';
-import ViewContainer from '../components/UI/ViewContainer';
+import Card from '../components/UI/Containers/Card';
+import ViewContainer from '../components/UI/Containers/ViewContainer';
 import css from './AddItemView.module.css';
 
 interface Props {}

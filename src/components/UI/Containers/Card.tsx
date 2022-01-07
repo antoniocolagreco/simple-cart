@@ -1,17 +1,17 @@
 import { ReactNode } from 'react';
-import LoadingMask from './LoadingMask';
+import LoadingMask from '../LoadingMask';
 import css from './Card.module.css';
+import './CardInputs.css';
 import { motion, Transition, Variants } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
 
 const variants: Variants = {
   out: { y: '100vh', opacity: 0 },
   in: { y: '0vh', opacity: 1 },
 };
 
-const transition: Transition = { ease: 'easeOut', duration: 0.2 };
+const transition: Transition = { ease: 'easeInOut', duration: 0.2 };
 
-const Card = (props: CardProps) => {
+const Card = (props: Props) => {
   return (
     <motion.div variants={variants} className={css.card} initial='out' exit='out' animate='in' transition={transition}>
       {props.children}
@@ -21,7 +21,7 @@ const Card = (props: CardProps) => {
 };
 export default Card;
 
-interface CardProps {
+interface Props {
   children?: ReactNode;
   iSLoading?: boolean;
 }

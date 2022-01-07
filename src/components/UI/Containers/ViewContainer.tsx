@@ -3,11 +3,10 @@ import css from './ViewContainer.module.css';
 
 interface Props {
   children: ReactNode;
-  centered?: boolean;
 }
 
 const ViewContainer = (props: Props) => {
-  return <main className={css['view-main'] + ' ' + (props.centered ? css.centered : '')}>{props.children}</main>;
+  return <div className={css['view-container']}>{props.children}</div>;
 };
 
 export default ViewContainer;

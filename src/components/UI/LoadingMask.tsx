@@ -1,4 +1,4 @@
-import LoadingIcon from '../../icons/LoadingIcon';
+import Icon, { IconType } from './Icon';
 import css from './LoadingMask.module.css';
 
 interface Props {
@@ -11,7 +11,7 @@ const LoadingMask = (props: Props) => {
     <>
       {props.isVisible && (
         <div className={css['loading-mask']}>
-          <LoadingIcon />
+          <Icon type={IconType.LOADING} />
           <span>{props.label}</span>
         </div>
       )}

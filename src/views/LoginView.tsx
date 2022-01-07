@@ -1,9 +1,10 @@
 import { ChangeEvent, FocusEvent, FormEvent, useContext, useState } from 'react';
-import Card from '../components/UI/Card';
-import ViewContainer from '../components/UI/ViewContainer';
+import SimpleButton, { ButtonColor } from '../components/UI/Buttons/SimpleButton';
+import Card from '../components/UI/Containers/Card';
+import ViewContainer from '../components/UI/Containers/ViewContainer';
+import ErrorMessage from '../components/UI/ErrorMessage';
+import { IconType } from '../components/UI/Icon';
 import AuthContext, { LoginOutcome } from '../contexts/AuthContext';
-
-import ChevronRight from '../icons/ChevronRight';
 import css from './LoginView.module.css';
 
 const emailRegex =
@@ -53,7 +54,7 @@ const LoginView = (props: LoginViewProps) => {
       const outcome: LoginOutcome = await authContext.login(email, password);
       switch (outcome) {
         case LoginOutcome.OK:
-          props.onSuccess();
+          // props.onSuccess();
           break;
         case LoginOutcome.USER_NOT_FOUND:
           setEmailServerValid(false);
@@ -71,7 +72,7 @@ const LoginView = (props: LoginViewProps) => {
   };
 
   return (
-    <ViewContainer centered={true}>
+    <ViewContainer>
       <Card iSLoading={isLoading}>
         <form className={css['login-form']} onSubmit={loginHandler} noValidate>
           <div>
@@ -83,10 +84,8 @@ const LoginView = (props: LoginViewProps) => {
               onBlur={emailBlurHandler}
               className={(!emailIsValid || !emailServerValid) && emailEdited ? 'invalid' : ''}
             />
-            {!emailIsValid && emailEdited && <p className={css['error-message']}>L'indirizzo email non è valido</p>}
-            {!emailServerValid && emailEdited && (
-              <p className={css['error-message']}>Utente non trovato. Registrati.</p>
-            )}
+            <ErrorMessage condition={!emailIsValid && emailEdited}>L'indirizzo email non è valido</ErrorMessage>
+            <ErrorMessage condition={!emailServerValid && emailEdited}>Utente non trovato. Registrati!</ErrorMessage>
           </div>
           <div>
             <input
@@ -97,23 +96,22 @@ const LoginView = (props: LoginViewProps) => {
               onBlur={passwordBlurHandler}
               className={(!passwordIsValid || !passwordServerValid) && passwordEdited ? 'invalid' : ''}
             />
-            {!passwordIsValid && passwordEdited && (
-              <p className={css['error-message']}>
-                La password non è valida. E' necessario inserire almeno 8 caratteri, 1 lettera minuscola, 1 maiuscola ed
-                1 numero.
-              </p>
-            )}
-            {!passwordServerValid && passwordEdited && <p className={css['error-message']}>Password errata.</p>}
+            <ErrorMessage condition={!passwordIsValid && passwordEdited}>
+              La password non è valida. E' necessario inserire almeno 8 caratteri, 1 lettera minuscola, 1 maiuscola ed 1
+              numero.
+            </ErrorMessage>
+            <ErrorMessage condition={!passwordServerValid && passwordEdited}>Password errata.</ErrorMessage>
           </div>
-          <button className={css['login-button']} type='submit'>
-            Accedi
-          </button>
+          <SimpleButton label='Accedi' type='submit' buttonColor={ButtonColor.PRIMARY} />
           <div className={css['signup-container']}>
-            Non hai un account?{' '}
-            <button className={css['signup-button']} onClick={props.onSignup}>
-              Registrati
-              <ChevronRight className={css['signup-icon']} />
-            </button>
+            Non hai un account?
+            <SimpleButton
+              label='Registrati'
+              onClick={props.onSignup}
+              type='button'
+              icon={IconType.CHEVRON_RIGHT}
+              buttonColor={ButtonColor.SECONDARY}
+            />
           </div>
         </form>
       </Card>
@@ -125,5 +123,5 @@ export default LoginView;
 
 interface LoginViewProps {
   onSignup(): void;
-  onSuccess(): void;
+  // onSuccess(): void;
 }

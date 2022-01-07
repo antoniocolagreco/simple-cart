@@ -1,17 +1,21 @@
-import React, { ReactNode, useEffect, useState } from 'react';
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  User,
-  updateProfile,
-  setPersistence,
-  browserLocalPersistence,
-  signOut,
-  onAuthStateChanged,
-} from 'firebase/auth';
 import { FirebaseError } from '@firebase/util';
+import {
+  browserLocalPersistence,
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
+  setPersistence,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
+  User,
+} from 'firebase/auth';
+import React, { ReactNode, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import DB, { DBOutcome } from '../api/DB';
 import { FirebaseInit } from '../api/FirebaseInit';
+import { Views } from '../App';
+import Profile from '../models/Profile';
 
 export enum LoginOutcome {
   OK,
@@ -29,6 +33,8 @@ export enum SignupOutcome {
 const context: AuthContextInterface = {
   isLoadingUser: true,
   user: null,
+  profile: null,
+  setProfile: () => {},
   isLoggedIn: () => false,
   login: (email: string, password: string): Promise<LoginOutcome> => {
     return new Promise((resolve, reject) => {
@@ -49,14 +55,54 @@ export default AuthContext;
 
 export const AuthContextProvider = (props: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [isLoadingUser, setIsLoadingUser] = useState<boolean>(true);
   const auth = getAuth(FirebaseInit.getFirebaseApp());
-  console.log('Is loading user: ' + isLoadingUser);
+  const nav = useNavigate();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
+      if (authUser !== null) {
+        const getProfileResult = await DB.getProfile(authUser.uid);
+        switch (getProfileResult.dbOutcome) {
+          case DBOutcome.OK:
+            console.log('AUTH: Profile found.');
+            setProfile(getProfileResult.value as Profile);
+            break;
+          case DBOutcome.NOT_FOUND:
+            console.log('AUTH: Profile not found, trying to create a new one.');
+            const newProfile: Profile = {
+              id: authUser.uid,
+              email: authUser.email!,
+              name: authUser.displayName!,
+              shoppingLists: [],
+            };
+            const addProfileResult = await DB.addProfile(newProfile);
+            switch (addProfileResult.dbOutcome) {
+              case DBOutcome.OK:
+                console.log('AUTH: Created new Profile.');
+                setProfile(addProfileResult.value as Profile);
+                break;
+              case DBOutcome.ERROR:
+                console.log('AUTH: Error a new Profile.');
+                break;
+            }
+            break;
+          case DBOutcome.ERROR:
+            console.log('AUTH: Error');
+            break;
+        }
+      }
+      console.log(profile);
       setUser(authUser);
       setIsLoadingUser(false);
+      if (authUser) {
+        nav(Views.SHOPPING_LISTS);
+        console.log('AUTH: Loading user ' + authUser.displayName + ' ' + authUser.email);
+      } else {
+        nav(Views.LOGIN);
+        console.log('AUTH: setting user to null');
+      }
     });
     return unsubscribe;
   }, [auth]);
@@ -67,7 +113,7 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
     await setPersistence(auth, browserLocalPersistence).then(async () => {
       await signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          setUser(userCredential.user);
+          // setUser(userCredential.user);
         })
         .catch((error: FirebaseError) => {
           const errorCode = error.code;
@@ -92,6 +138,7 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
   const logoutHandler = async () => {
     await signOut(auth)
       .then(() => {
+        setProfile(null);
         setIsLoadingUser(false);
       })
       .catch((error: FirebaseError) => {
@@ -100,7 +147,7 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
       });
   };
 
-  //////////////////////// SIGNIN /////////////////////////
+  //////////////////////// SIGNUP /////////////////////////
   const signupHandler = async (email: string, password: string, name: string) => {
     let signupOutcome = SignupOutcome.OK;
     await setPersistence(auth, browserLocalPersistence).then(async () => {
@@ -109,7 +156,7 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
           updateProfile(userCredential.user, {
             displayName: name,
           });
-          setUser(userCredential.user);
+          // setUser(userCredential.user);
         })
         .catch((error: FirebaseError) => {
           const errorCode = error.code;
@@ -128,7 +175,7 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
   };
 
   const isLoggedIn = (): boolean => {
-    if (user !== undefined && user !== null) return true;
+    if (profile !== null && user !== null) return true;
     else return false;
   };
 
@@ -137,6 +184,8 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
       value={{
         isLoadingUser: isLoadingUser,
         user: user,
+        profile: profile,
+        setProfile: () => setProfile,
         isLoggedIn: isLoggedIn,
         login: loginHandler,
         logout: logoutHandler,
@@ -151,6 +200,8 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
 interface AuthContextInterface {
   isLoadingUser: boolean;
   user: User | null;
+  profile: Profile | null;
+  setProfile: React.Dispatch<React.SetStateAction<Profile>>;
   isLoggedIn(): boolean;
   login(email: string, password: string): Promise<LoginOutcome>;
   logout(): void;

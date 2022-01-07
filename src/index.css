@@ -13,11 +13,18 @@
   --page-min-width: 23rem;
   --page-max-width: 61rem;
   --page-side-padding: 0.5rem;
+  --color-black-shade-2: #212529;
+  --color-black-shade-1: #343a40;
   --color-black: #495057;
+  --color-black-tint-1: #868e96;
+  --color-black-tint-2: #adb5bd;
+  --color-black-tint-3: #ced4da;
+  --color-black-tint-4: #dee2e6;
+  --color-black-tint-5: #e9ecef;
   --color-white: #fff;
   --color-shadow: hsla(0, 0%, 0%, 0.1);
-  --color-main-1: hsl(24, 94%, 50%);
   --color-main-shade-1: hsl(17, 87%, 45%);
+  --color-main: hsl(24, 94%, 50%);
   --color-main-tint-1: hsl(27, 98%, 54%);
   --color-main-tint-2: hsl(29, 100%, 58%);
   --color-main-tint-3: hsl(31, 100%, 65%);
@@ -28,6 +35,10 @@
   --color-accent-tint-4: #99e9f2;
   --color-accent-tint-5: #e3fafc;
   --color-accent-tint-6: hsla(185, 81%, 94%, 0.5);
+  --color-ok: #2b8a3e;
+  --color-ok-tint-1: #37b24d;
+  --color-ok-tint-2: #51cf66;
+  --color-ok-tint-3: #ebfbee;
   --color-error: #f03e3e;
   --color-error-tint-1: #fa5252;
   --color-error-tint-2: #ff6b6b;
@@ -54,7 +65,15 @@ body {
   color: var(--color-black);
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, var(--color-white), var(--color-accent-tint-4));
+  background: linear-gradient(0deg, var(--color-accent-tint-4), var(--color-accent-tint-5));
+}
+
+#root {
+  height: inherit;
+  width: inherit;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 h1 {
@@ -80,4 +99,21 @@ h5 {
 h6 {
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-regular);
+}
+
+html {
+  overflow: hidden;
+}
+
+main {
+  overflow: hidden;
+  height: inherit;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  scrollbar-color: transparent transparent;
+}
+
+main::-webkit-scrollbar {
+  display: none;
 }

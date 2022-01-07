@@ -1,0 +1,10 @@
+.sheet {
+  padding: 1rem;
+  background-color: var(--color-white);
+  flex-grow: 1;
+  box-shadow: 0 0.5rem 1rem 0.2rem var(--color-shadow);
+  width: 23rem;
+  margin: 1rem auto;
+  border: 1px solid var(--color-black-tint-4);
+  /* min-height: 30rem; */
+}

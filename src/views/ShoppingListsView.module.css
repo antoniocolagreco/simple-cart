@@ -1,0 +1,9 @@
+.shopping-lists-container {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.shopping-lists-container li {
+  list-style: none;
+}

@@ -1,16 +1,3 @@
-.card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  width: 20rem;
-  margin: 2rem auto;
-  background-color: var(--color-white);
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 0.5rem 1rem 0.2rem var(--color-shadow);
-}
-
 input,
 select,
 option {
@@ -31,15 +18,6 @@ select:focus {
 
 option {
   background-color: var(--color-white);
-}
-
-button {
-  padding: 0.5rem 1rem;
-  font-size: var(--font-size-big);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
 }
 
 input.invalid {

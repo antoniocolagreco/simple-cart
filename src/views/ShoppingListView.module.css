@@ -1,0 +1,26 @@
+.shopping-list-ul {
+  margin-top: 0.5rem;
+}
+
+.shopping-list-li {
+  border-bottom: 1px solid var(--color-black-tint-2);
+  list-style: none;
+}
+
+.shopping-list-li:last-child {
+  border-bottom: 0;
+  list-style: none;
+}
+
+.shopping-list-li-container {
+  display: grid;
+  grid-template-columns: 2rem 1fr auto;
+  align-items: center;
+  column-gap: 1rem;
+  padding: 0.5rem 0;
+  font-size: var(--font-size-big);
+}
+
+.check {
+  color: var(--color-ok-tint-1);
+}

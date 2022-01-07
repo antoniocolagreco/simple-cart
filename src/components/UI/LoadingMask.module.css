@@ -10,7 +10,7 @@
 }
 
 .loading-mask span {
-  /* color: var(--color-main-1); */
+  /* color: var(--color-main); */
   /* font-weight: var(--font-weight-bold); */
   margin-top: 1rem;
   font-size: var(--font-size-regular);

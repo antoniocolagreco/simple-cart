@@ -1,0 +1,70 @@
+.simple-button {
+  padding: 0.5rem 1rem;
+  font-size: var(--font-size-big);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.icon {
+  display: inline-block;
+  width: var(--font-size-big);
+  height: var(--font-size-big);
+}
+
+.simple-button.primary {
+  background-color: var(--color-main-tint-1);
+  color: var(--color-white);
+}
+
+.simple-button.primary:hover {
+  background-color: var(--color-main-tint-2);
+}
+
+.simple-button.primary:active {
+  background-color: var(--color-main-tint-3);
+}
+
+.simple-button.secondary {
+  background-color: var(--color-accent-tint-1);
+  color: var(--color-white);
+}
+
+.simple-button.secondary:hover {
+  background-color: var(--color-accent-tint-2);
+}
+
+.simple-button.secondary:active {
+  background-color: var(--color-accent-tint-3);
+}
+
+.simple-button.cancel {
+  background-color: var(--color-error);
+  color: var(--color-white);
+}
+
+.simple-button.cancel:hover {
+  background-color: var(--color-error-tint-1);
+}
+
+.simple-button.cancel:active {
+  background-color: var(--color-error-tint-2);
+}
+
+.simple-button.ok {
+  background-color: var(--color-ok);
+  color: var(--color-white);
+}
+
+.simple-button.ok:hover {
+  background-color: var(--color-ok-tint-1);
+}
+
+.simple-button.ok:active {
+  background-color: var(--color-ok-tint-2);
+}

@@ -1,0 +1,25 @@
+.footer {
+  width: 100%;
+  background-color: var(--color-main);
+  box-shadow: 0 0 0.5rem 0.5rem var(--color-shadow);
+  z-index: 1;
+}
+
+.footer-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 0.5rem;
+  min-width: var(--page-min-width);
+  max-width: var(--page-max-width);
+  padding: 0.5rem var(--page-side-padding);
+  margin: 0 auto;
+  align-items: center;
+  min-height: 3.6rem;
+  transition: 0.2s all;
+}
+
+@media (max-width: 500px) {
+  .footer-bar {
+    min-height: 5.1rem;
+  }
+}
